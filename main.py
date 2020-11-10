@@ -1,5 +1,6 @@
 import os
 import os.path
+import sys
 import json
 import time
 import m3u8
@@ -37,8 +38,9 @@ class Application(Frame):
         # Tkinter
         self.master = master
 
+        self.master.resizable(False, False)
         self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.master.geometry("1200x800")
+        self.master.geometry("925x700")
         self.master.title("ILIAS TOOLS")
 
         self.debug_mode = BooleanVar(value=True)
@@ -50,9 +52,10 @@ class Application(Frame):
 
         # Selenium
         self.chrome_options = Options()
-        #self.chrome_options.add_argument("--no-sandbox")
-        #self.chrome_options.add_argument("--headless")
-        #self.chrome_options.add_argument("--test-type")
+
+        if headless:
+            self.chrome_options.add_argument("--headless")
+        
         self.chrome_options.add_experimental_option("prefs", {
                 "profile.default_content_settings.popups": 0,
                 "download.default_directory": os.getcwd() + "\\downloads",
@@ -70,7 +73,7 @@ class Application(Frame):
     def on_closing(self):
         self.master.destroy()
         self.browser.quit()
-        exit()
+        sys.exit(0)
 
     def create_widgets(self):
         # Login frame
@@ -103,7 +106,7 @@ class Application(Frame):
         self.label_login_status.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), sticky="w")
 
         # TreeView
-        self.tree = ttk.Treeview(self.master, height=20)
+        self.tree = ttk.Treeview(self.master, height=25)
 
         self.tree["columns"] = ("one", "two", "three")
 
@@ -122,7 +125,7 @@ class Application(Frame):
 
         # Lower buttons frame
         self.frame_buttons = ttk.Frame(self.master)
-        self.frame_buttons.grid(row=2, column=0, padx=(0, 0), pady=(0, 0), sticky="w")
+        self.frame_buttons.grid(row=2, column=0, padx=(0, 0), pady=(15, 0), sticky="w")
 
         # Crawl button
         self.button_crawl = ttk.Button(self.frame_buttons, text="Update", command=self.crawl)
@@ -130,7 +133,7 @@ class Application(Frame):
 
         # Download button
         self.button_download = ttk.Button(self.frame_buttons, text="Download", command=self.download)
-        self.button_download.grid(row=0, column=1, padx=(10, 0), pady=(10, 0), sticky="w")
+        self.button_download.grid(row=0, column=1, padx=(20, 0), pady=(10, 0), sticky="w")
     
     def login(self):
         thread = Thread(target=self.login_thread, args=())
@@ -445,6 +448,18 @@ class IliasItem:
 
 
 if __name__ == "__main__":
+    args = sys.argv
+
+    assert len(args) <= 2, "To many arguments! Read README.md to see all options."
+
+    headless = False
+    if len(args) == 2:
+        if args[1] == "--headless":
+            headless = True
+        else:
+            print("False argument! Read README.md to see all options.")
+            sys.exit(1)
+
     base_url = "https://ilias.uni-freiburg.de/"
     login_url = base_url + "login.php?target=&client_id=unifreiburg&cmd=force_login&lang=de"
     logout_url = base_url + "logout.php?lang=de"
