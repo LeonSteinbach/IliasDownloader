@@ -1,39 +1,31 @@
-#Adding an existing project to GitHub using the command line
+# Description
+This is a helper tool for downloading files from ILIAS.
 
-Simple steps to add existing project to Github.
+It also allows you to download video streams (like in Logik) and interactive videos (like in Machine Learning), 
+which you can't download via ILIAS.
+It works only for the University of Freiburg.
 
-## 1. Create a new repository on GitHub.
-In Terminal, change the current working directory to your local project.
+# Installation
+Run the following to install the required python packages:
+```bash
+pip install -r requirements.txt
+```
 
-##2. Initialize the local directory as a Git repository.
+# Usage
+Run the following to start the tool in normal mode:
+```bash
+python main.py
+```
+If you don't want the browser to open, run the following:
+```bash
+python main.py --headless
+```
 
-	git init
-	
-Add the files in your new local repository. This stages them for the first commit.
+# Disclaimer
+I am not responsible for any damage or unintended changes to your ILIAS account that could potentially happen.
 
-	git add .
+The tool crawls through your ILIAS account and searches for files in your courses that are on your desk.
 
-or:
-	
-	git add --all
+No login data, passwords or personal information are sent to anyone.
 
-Commit the files that you've staged in your local repository.
-
-	git commit -m 'First commit'
-
-
-Copy remote repository URL field from your GitHub repository, in the right sidebar, copy the remote repository URL.
-
-In Terminal, add the URL for the remote repository where your local repostory will be pushed.
-
-	git remote add origin <remote repository URL>
-	
-Sets the new remote:
-	
-	git remote -v
-
-Push the changes in your local repository to GitHub.
-
-	git push origin master
-
-Pushes the changes in your local repository up to the remote repository you specified as the origin
+Only the ILIAS tree structure is saved locally in a json file in order to load the tree more quickly the next time the tool is started.
