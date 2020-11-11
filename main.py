@@ -195,6 +195,9 @@ class Application(Frame):
         self.logged_in = False
         self.login_error = False
 
+        self.label_login_status["foreground"] = "orange"
+        self.label_login_status["text"] = "logged out"
+
         self.browser.get(logout_url)
         self.browser.quit()
         self.browser = webdriver.Chrome(options=self.chrome_options)
