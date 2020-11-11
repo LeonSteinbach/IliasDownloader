@@ -415,20 +415,23 @@ class IliasItem:
         link = browser.find_elements_by_xpath("//a[contains(@onclick, '.playVideo')]")
         if len(link) != 0:
             link[0].click()
-            time.sleep(2)
+            time.sleep(5)
 
-            link_type = "TS"
-            link_url = browser.find_element_by_xpath("//video//source").get_attribute("src")
-            link_title = browser.find_element_by_xpath("//h4[@class='modal-title']").text + " - Stream"
-            file_type = "TS"
-            file_size = browser.find_elements_by_xpath("//div[contains(@id, 'video_container')]//p")[0].text
-            file_changed = browser.find_elements_by_xpath("//div[contains(@id, 'video_container')]//p")[1].text
+            try:
+                link_type = "TS"
+                link_url = browser.find_element_by_xpath("//video//source").get_attribute("src")
+                link_title = browser.find_element_by_xpath("//h4[@class='modal-title']").text + " - Stream"
+                file_type = "TS"
+                file_size = browser.find_elements_by_xpath("//div[contains(@id, 'video_container')]//p")[0].text
+                file_changed = browser.find_elements_by_xpath("//div[contains(@id, 'video_container')]//p")[1].text
 
-            file_properties = [file_type, file_size, file_changed]
+                file_properties = [file_type, file_size, file_changed]
 
-            item = IliasItem(link_type, link_title, link_url, file_properties)
-            item.check_title(self)
-            self.sub_items.append(item)
+                item = IliasItem(link_type, link_title, link_url, file_properties)
+                item.check_title(self)
+                self.sub_items.append(item)
+            except:
+                print("error loading video stream")
 
         # Interactive videos
         link_urls = browser.find_elements_by_xpath("//div[contains(@class, 'InteractiveVideo')]//video//source")
