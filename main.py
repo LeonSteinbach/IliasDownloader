@@ -89,7 +89,7 @@ class Application(Frame):
         # Password label and entry
         self.label_password = ttk.Label(self.frame_login, text="Password")
         self.label_password.grid(row=0, column=1, padx=(10, 0), pady=(0, 0), sticky="w")
-        self.entry_password = ttk.Entry(self.frame_login)
+        self.entry_password = ttk.Entry(self.frame_login, show="*")
         self.entry_password.grid(row=1, column=1, padx=(10, 0), pady=(0, 0), sticky="w")
 
         # Login button
